@@ -2,9 +2,14 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 require('dotenv').config()
 const mongoose = require('mongoose')
+const cors = require('cors')
 const schema = require('./schema/schema');
 
 const app = express();
+
+// allow cross-origin requests
+app.use(cors())
+
 const username = process.env.username;
 const password = process.env.password;
 
