@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {gql} from 'apollo-boost';
 import {graphql, compose} from 'react-apollo';
+import { getBooksQuery } from "./BookList";
 
 const getAuthorsQuery = gql`
 {
@@ -12,8 +13,8 @@ const getAuthorsQuery = gql`
 `
 
 const addBookMutation=gql`
-    mutation{
-        addBook(name:"", genre:"",authorId:""){
+    mutation($name:String!, $genre:String, $authorId:ID!){
+        addBook(name:$name, genre:$genre,authorId:$authorId){
             name
             id
         }
@@ -41,7 +42,14 @@ class AddBook extends Component {
 
     submitForm(e){
         e.preventDefault();
-        this.props.addBookMutation()
+        this.props.addBookMutation({
+            variables:{
+                name:this.state.name,
+                genre:this.state.genre,
+                authorId:this.state.authorId
+            },
+            refetchQueries:[{query:getBooksQuery}]
+        })
     }
     
   render() {
